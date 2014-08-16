@@ -40,4 +40,5 @@
   (let [hosts (load-file (first args))]
     (doseq [host hosts]
       (search-in-clueweb-time host)
-      (take-screenshot :file (str host ".png")))))
+      (take-screenshot :file (str host ".png"))
+      (Thread/sleep (+ 3000 (rand-int 12001))))))
