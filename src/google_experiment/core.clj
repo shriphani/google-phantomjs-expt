@@ -1,4 +1,5 @@
 (ns google-experiment.core
+  (:require [clojure.string :as string])
   (:use [clj-webdriver.taxi]
         [clj-webdriver.driver :only [init-driver]])
   (:import [org.openqa.selenium.phantomjs PhantomJSDriver]
@@ -29,8 +30,14 @@
         (spit out-file (html "html")))
     url))
 
+(defn load-file
+  [filename]
+  (string/split-lines
+   (slurp filename)))
 
-
-(search-in-clueweb-time "forums.finalgear.com")
-
-(take-screenshot :file "phantom.png")
+(defn -main
+  [& args]
+  (let [hosts (load-file (first args))]
+    (doseq [host hosts]
+      (search-in-clueweb-time host)
+      (take-screenshot :file (str host ".png")))))
